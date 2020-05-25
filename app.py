@@ -6,9 +6,9 @@ import bs4
 app =Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
-@cross_origin
+@cross_origin()
 def webhook():
-    req= request.get_json()
+    req= request.get_json(silent=True, force=True)
     res= processRequest(req)
 
     res= json.dumps(res, indent=4)
@@ -21,7 +21,7 @@ def processRequest(req):
     sessionID= req.get('responseID')
     result = req.get("queryResult")
     user_says=result.get("queryText")
-    log.write_log(sessionID, "User Says: "+user_says)
+    #log.write_log(sessionID, "User Says: "+user_says)
     parameters = result.get("parameters")
     city=parameters.get("city_name")
 
